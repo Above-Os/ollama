@@ -479,26 +479,26 @@ jobs:
   #           dist/ollama-windows-*.zip
 
   # Linux x86 assets built using the container based build
-  build-linux-amd64:
-    environment: release
-    runs-on: linux
-    env:
-      PLATFORM: linux/amd64
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: recursive
-      - name: Set Version
-        shell: bash
-        run: echo "VERSION=${GITHUB_REF_NAME#v}" >> $GITHUB_ENV
-      - run: |
-          ./scripts/build_linux.sh
-      - uses: actions/upload-artifact@v4
-        with:
-          name: dist-linux-amd64
-          path: |
-            dist/*linux*
-            !dist/*-cov
+  # build-linux-amd64:
+  #   environment: release
+  #   runs-on: linux
+  #   env:
+  #     PLATFORM: linux/amd64
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #       with:
+  #         submodules: recursive
+  #     - name: Set Version
+  #       shell: bash
+  #       run: echo "VERSION=${GITHUB_REF_NAME#v}" >> $GITHUB_ENV
+  #     - run: |
+  #         ./scripts/build_linux.sh
+  #     - uses: actions/upload-artifact@v4
+  #       with:
+  #         name: dist-linux-amd64
+  #         path: |
+  #           dist/*linux*
+  #           !dist/*-cov
 
   # Linux ARM assets built using the container based build
   # (at present, docker isn't pre-installed on arm ubunutu images)
@@ -717,50 +717,50 @@ jobs:
   #         push: true
 
   # Aggregate all the assets and ship a release
-  release:
-    needs:
-      # - build-darwin
-      # - build-windows
-      - build-linux-amd64
-      #- build-linux-arm64
-    runs-on: linux
-    environment: release
-    permissions:
-      contents: write
-    env:
-      GH_TOKEN: ${{ github.token }}
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set Version
-        shell: bash
-        run: |
-          echo "VERSION=${GITHUB_REF_NAME#v}" >> $GITHUB_ENV
-          echo "RELEASE_VERSION=$(echo ${GITHUB_REF_NAME} | cut -f1 -d-)" >> $GITHUB_ENV
-      - name: Retrieve built artifact
-        uses: actions/download-artifact@v4
-        with:
-          path: dist
-          pattern: dist-*
-          merge-multiple: true
-      - run: |
-          ls -lh dist/
-          (cd dist; find . -type f | xargs sha256sum > ../sha256sum.txt)
-          mv sha256sum.txt dist/
-          cat dist/sha256sum.txt
-      - name: Create or update Release
-        run: |
-          echo "Looking for existing release for ${{ env.RELEASE_VERSION }}"
-          OLD_TAG=$(gh release ls --json name,tagName | jq -r ".[] | select(.name == \"${{ env.RELEASE_VERSION }}\") | .tagName")
-          if [ -n "$OLD_TAG" ]; then
-            echo "Updating release ${{ env.RELEASE_VERSION }} to point to new tag ${GITHUB_REF_NAME}"
-            gh release edit ${OLD_TAG} --tag ${GITHUB_REF_NAME}
-          else
-            echo "Creating new release ${{ env.RELEASE_VERSION }} pointing to tag ${GITHUB_REF_NAME}"
-            gh release create ${GITHUB_REF_NAME} \
-              --title ${{ env.RELEASE_VERSION }} \
-              --draft \
-              --generate-notes \
-              --prerelease
-          fi
-          echo "Uploading artifacts for tag ${GITHUB_REF_NAME}"
-          gh release upload ${GITHUB_REF_NAME} dist/* --clobber
+  # release:
+  #   needs:
+  #     # - build-darwin
+  #     # - build-windows
+  #     - build-linux-amd64
+  #     #- build-linux-arm64
+  #   runs-on: linux
+  #   environment: release
+  #   permissions:
+  #     contents: write
+  #   env:
+  #     GH_TOKEN: ${{ github.token }}
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Set Version
+  #       shell: bash
+  #       run: |
+  #         echo "VERSION=${GITHUB_REF_NAME#v}" >> $GITHUB_ENV
+  #         echo "RELEASE_VERSION=$(echo ${GITHUB_REF_NAME} | cut -f1 -d-)" >> $GITHUB_ENV
+  #     - name: Retrieve built artifact
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         path: dist
+  #         pattern: dist-*
+  #         merge-multiple: true
+  #     - run: |
+  #         ls -lh dist/
+  #         (cd dist; find . -type f | xargs sha256sum > ../sha256sum.txt)
+  #         mv sha256sum.txt dist/
+  #         cat dist/sha256sum.txt
+  #     - name: Create or update Release
+  #       run: |
+  #         echo "Looking for existing release for ${{ env.RELEASE_VERSION }}"
+  #         OLD_TAG=$(gh release ls --json name,tagName | jq -r ".[] | select(.name == \"${{ env.RELEASE_VERSION }}\") | .tagName")
+  #         if [ -n "$OLD_TAG" ]; then
+  #           echo "Updating release ${{ env.RELEASE_VERSION }} to point to new tag ${GITHUB_REF_NAME}"
+  #           gh release edit ${OLD_TAG} --tag ${GITHUB_REF_NAME}
+  #         else
+  #           echo "Creating new release ${{ env.RELEASE_VERSION }} pointing to tag ${GITHUB_REF_NAME}"
+  #           gh release create ${GITHUB_REF_NAME} \
+  #             --title ${{ env.RELEASE_VERSION }} \
+  #             --draft \
+  #             --generate-notes \
+  #             --prerelease
+  #         fi
+  #         echo "Uploading artifacts for tag ${GITHUB_REF_NAME}"
+  #         gh release upload ${GITHUB_REF_NAME} dist/* --clobber
