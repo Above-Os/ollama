@@ -26,8 +26,8 @@ ifeq ($(OS),linux)
 	CUDA_PATH?=/usr/local/cuda
 	GPU_COMPILER_FPIC = -fPIC -Wno-unused-function -std=c++11
 endif
-GPU_RUNNER_ARCH_FLAGS := $(foreach arch,$(subst ;,$(space),$(CUDA_ARCHITECTURES)),--generate-code=arch=compute_$(arch)$(comma)code=[compute_$(arch)$(comma)sm_$(arch)]) \
-	-DGGML_CUDA_USE_GRAPHS=1
+GPU_RUNNER_ARCH_FLAGS := $(foreach arch,$(subst ;,$(space),$(CUDA_ARCHITECTURES)),--generate-code=arch=compute_$(arch)$(comma)code=[compute_$(arch)$(comma)sm_$(arch)]) 
+	
 GPU_COMPILER_CUFLAGS = \
 	$(GPU_COMPILER_FPIC) \
 	-Xcompiler "$(addprefix $(CPU_FLAG_PREFIX),$(_OS_GPU_RUNNER_CPU_FLAGS))" \
