@@ -550,11 +550,12 @@ jobs:
     strategy:
       matrix:
         runner:
-          - linux-amd64
+          - linux
           #- linux-arm64
     runs-on: ${{ matrix.runner }}
     env:
       FINAL_IMAGE_REPO: beclab/ollama
+      PLATFORM: linux/amd64
     steps:
       - uses: actions/checkout@v4
         with:
