@@ -552,7 +552,7 @@ jobs:
     #     runner:
     #       - linux
     #       #- linux-arm64
-    runs-on: linux/amd64
+    runs-on: ubuntu-latest 
     env:
       FINAL_IMAGE_REPO: beclab/ollama
       PLATFORM: linux/amd64
