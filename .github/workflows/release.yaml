@@ -556,7 +556,7 @@ jobs:
     env:
       FINAL_IMAGE_REPO: beclab/ollama
       PLATFORM_PAIR: linux-amd64
-      ARCH: linux/amd64
+      ARCH: amd64
     steps:
       - uses: actions/checkout@v4
         with:
