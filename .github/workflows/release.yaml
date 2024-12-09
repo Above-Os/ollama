@@ -551,7 +551,7 @@ jobs:
       matrix:
         runner:
           - linux
-          - linux-arm64
+          #- linux-arm64
     runs-on: ${{ matrix.runner }}
     env:
       FINAL_IMAGE_REPO: beclab/ollama
