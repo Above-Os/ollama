@@ -550,7 +550,7 @@ jobs:
     strategy:
       matrix:
         runner:
-          - linux
+          - linux-amd64
           #- linux-arm64
     runs-on: ${{ matrix.runner }}
     env:
