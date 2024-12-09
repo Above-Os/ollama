@@ -599,8 +599,8 @@ jobs:
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
-          username: ${{ vars.DOCKER_USER }}
-          password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASS }}
       - name: Build and push by digest
         id: build
         uses: docker/build-push-action@v6
@@ -663,8 +663,8 @@ jobs:
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
-          username: ${{ vars.DOCKER_USER }}
-          password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASS }}
       - name: Create manifest list and push
         working-directory: /tmp/digests
         run: |
@@ -703,8 +703,8 @@ jobs:
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
-          username: ${{ vars.DOCKER_USER }}
-          password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASS }}
       - name: Build and push by digest
         id: build
         uses: docker/build-push-action@v6
@@ -719,8 +719,8 @@ jobs:
   # Aggregate all the assets and ship a release
   release:
     needs:
-      - build-darwin
-      - build-windows
+      # - build-darwin
+      # - build-windows
       - build-linux-amd64
       - build-linux-arm64
     runs-on: linux
