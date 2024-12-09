@@ -547,15 +547,16 @@ jobs:
   # Container image build
   build-container-image:
     environment: release
-    # strategy:
-    #   matrix:
-    #     runner:
-    #       - linux
-    #       #- linux-arm64
-    runs-on: ubuntu-latest 
+    strategy:
+      matrix:
+        runner:
+          - linux
+          #- linux-arm64
+    runs-on: ${{ matrix.runner }}
     env:
       FINAL_IMAGE_REPO: beclab/ollama
-      PLATFORM: linux/amd64
+      PLATFORM_PAIR: linux-amd64
+      ARCH: linux/amd64
     steps:
       - uses: actions/checkout@v4
         with:
