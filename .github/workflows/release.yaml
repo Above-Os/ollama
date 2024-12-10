@@ -552,7 +552,7 @@ jobs:
         runner:
           - self-hosted-amd64
          # - linux-arm64
-    runs-on: ubuntu-22.04
+    runs-on: self-hosted-amd64
     env:
       FINAL_IMAGE_REPO: beclab/ollama
       ARCH: amd64
