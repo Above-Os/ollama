@@ -551,8 +551,8 @@ jobs:
       matrix:
         runner:
           - linux
-          - linux-arm64
-    runs-on: linux
+         # - linux-arm64
+    runs-on: ubuntu-22.04
     env:
       FINAL_IMAGE_REPO: beclab/ollama
       PLATFORM_PAIR: linux-amd64
