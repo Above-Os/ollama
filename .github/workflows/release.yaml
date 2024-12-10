@@ -552,7 +552,7 @@ jobs:
         runner:
           - linux
          # - linux-arm64
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-22.04-xlarge
     env:
       FINAL_IMAGE_REPO: beclab/ollama
       PLATFORM_PAIR: linux-amd64
