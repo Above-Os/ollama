@@ -550,13 +550,11 @@ jobs:
     strategy:
       matrix:
         runner:
-          - linux
+          - self-hosted-amd64
          # - linux-arm64
     runs-on: ubuntu-22.04
     env:
       FINAL_IMAGE_REPO: beclab/ollama
-      PLATFORM_PAIR: linux-amd64
-      PLATFORM: linux-amd64
       ARCH: amd64
     steps:
       - uses: actions/checkout@v4
@@ -631,7 +629,7 @@ jobs:
           retention-days: 1
   merge:
     environment: release
-    runs-on: linux
+    runs-on: self-hosted-amd64
     needs:
       - build-container-image
     env:
