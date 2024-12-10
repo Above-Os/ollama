@@ -552,7 +552,7 @@ jobs:
         runner:
           - linux
          # - linux-arm64
-    runs-on: ubuntu-22.04-xlarge
+    runs-on: ubuntu-22.04
     env:
       FINAL_IMAGE_REPO: beclab/ollama
       PLATFORM_PAIR: linux-amd64
@@ -588,6 +588,10 @@ jobs:
           tags: |
             type=ref,enable=true,priority=600,prefix=0.0.0-pr,suffix=,event=pr
             type=semver,pattern={{version}}
+      - name: Clean up
+        run: |
+          docker system prune -af || true
+          docker volume prune -f || true
       - name: Set Version
         shell: bash
         run: |
